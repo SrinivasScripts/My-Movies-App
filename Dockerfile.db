@@ -1,0 +1,10 @@
+# Use the official PostgreSQL image
+FROM postgres:latest
+
+# Set environment variables
+ENV POSTGRES_USER srinivas
+ENV POSTGRES_PASSWORD 1234
+ENV POSTGRES_DB moviesdb
+
+# Copy the SQL script to initialize the database
+COPY ./db/init.sql /docker-entrypoint-initdb.d/

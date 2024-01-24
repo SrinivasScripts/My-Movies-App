@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/style.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dashboard-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #555;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        input {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome to the Dashboard</h1>
+<!-- Movie creation form -->
+<form action="/createmovie" method="post">
+    <label for="movie_name">Movie Name:</label>
+    <input type="text" id="movie_name" name="movie_name" required>
+    <br>
+
+    <label for="director">Director:</label>
+    <input type="text" id="director" name="director" required>
+    <br>
+
+    <label for="hero">Hero:</label>
+    <input type="text" id="hero" name="hero" required>
+    <br>
+
+    <label for="heroine">Heroine:</label>
+    <input type="text" id="heroine" name="heroine" required>
+    <br>
+
+    <label for="industry">Industry:</label>
+    <input type="text" id="industry" name="industry" required>
+    <br>
+
+    <label for="release_year">Release Year:</label>
+    <input type="number" id="release_year" name="release_year" required>
+    <br>
+
+    <button type="submit">Create Movie</button>
+</form>
+    <!-- Display the list of created movies -->
+    <h2>Create Movies</h2>
+    <ul id="movieList">
+                <% movies.forEach(movie => { %>
+            <li>
+                <strong><%= movie.movie_name %></strong> directed by <%= movie.director %>,
+                released in <%= movie.release_year %>
+            </li>
+        <% }); %>
+    </ul>
+<!-- Sign out form -->
+<form action="/signout" method="post">
+    <button type="submit">Sign Out</button>
+</form>
+
+ <!-- JavaScript to fetch and display movies -->
+ <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('Script is running!');
+        fetch('/dashboard')
+            .then(response => response.json())
+            .then(data => {
+                const movieListElement = document.getElementById('movieList');
+                movieListElement.innerHTML = data.movies.map(movie => {
+                    return `<li><strong>${movie.movie_name}</strong> directed by ${movie.director}, released in ${movie.release_year}</li>`;
+                }).join('');
+            })
+            .catch(error => console.error('Error fetching movies:', error));
+    });
+</script>
+</body>
+</html>

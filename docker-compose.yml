@@ -1,0 +1,28 @@
+version: '3'
+services:
+  node-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${NODE_LOCAL_PORT}:${NODE_DOCKER_PORT}"
+    environment:
+      - POSTGRESDB_USER=${POSTGRESDB_USER}
+      - POSTGRESDB_ROOT_PASSWORD=${POSTGRESDB_ROOT_PASSWORD}
+      - POSTGRESDB_DATABASE=${POSTGRESDB_DATABASE}
+      - POSTGRESDB_LOCAL_PORT=${POSTGRESDB_LOCAL_PORT}
+      - POSTGRESDB_DOCKER_PORT=${POSTGRESDB_DOCKER_PORT}
+      - POSTGRES_DB_HOST=${POSTGRES_DB_HOST}
+      - NODE_LOCAL_PORT=${NODE_LOCAL_PORT}
+      - NODE_DOCKER_PORT=${NODE_DOCKER_PORT}
+    depends_on:
+      - postgres-db
+
+  postgres-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRESDB_USER}
+      POSTGRES_PASSWORD: ${POSTGRESDB_ROOT_PASSWORD}
+      POSTGRES_DB: ${POSTGRESDB_DATABASE}
+    ports:
+      - "${POSTGRESDB_LOCAL_PORT}:${POSTGRESDB_DOCKER_PORT}"
